@@ -16,9 +16,9 @@ app.MapGet("/todoitems", async (TodoDb db) =>
     await db.Todos.ToListAsync());
 #endregion
 
-#region GET => Completed To-do items.
-app.MapGet("/todoitems/complete", async (TodoDb db) =>
-    await db.Todos.Where(t => t.Completed).ToListAsync());
+#region GET => Not completed To-do items.
+app.MapGet("/todoitems/notComplete", async (TodoDb db) =>
+    await db.Todos.Where(t => t.Completed == false).ToListAsync());
 #endregion
 
 #region GET => To-do item by ID.
