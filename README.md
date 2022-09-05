@@ -48,32 +48,33 @@ Because we're using an InMemory DB, we'll need to do a few **POST** calls before
 ### HTTPRepl Scripting
 <details><summary>Click to see Scripting options</summary>
   
-  
+  \
   I've already prepared my HTTPRepl to use VS code as the default editor for the **POST** and **PUT** calls.
-  
+  \
+  \
   First you need to connect to your API, this means that that will be your working directory.
   
   ```
   httprepl https://localhost:7221
   ```
-  
+  \
   After that we need to start by running the **POST** in order to get items in your InMemory DB.
- 
+  \
   Connect to the directory of /todoitems.
   ```
   cd todoitems
   ```
-  
+  \
   When you've access that, then you will write following code, which opens the default editor of choice.
-  
+  \
   You will write your json object, save and then close the editor.
-  
+  \
   ```
   post -h {Content-Type}:{application/json}
   ```
-  
+  \
   After that you can start running all the **GET** calls.
-  
+  \
   To get all those To-do items which haven't been completed yet.
   ```
   cd notCompleted
@@ -82,7 +83,7 @@ Because we're using an InMemory DB, we'll need to do a few **POST** calls before
   ```
   get
   ```
-  
+  \
   To **GET** *all* To-do items.  ```cd ..```  to get back to our https://localhost:7221/todoitems
   ```
   cd ..
@@ -91,28 +92,29 @@ Because we're using an InMemory DB, we'll need to do a few **POST** calls before
   ```
   get
   ```
-  
+  \
   Getting a specific existing To-do item, then you simply write the ID that you want to access.
-  
+  \
   Which I've chosen to be the first ID.
   ```
   cd 1
   ```
+  \
   This shows a list of put **GET** **PUT** and **DELETE**
+  \
   
   To **PUT** the To-do item, you will get a editor to open where you do the changes, save and close.
   ```
   put -h {Content-Type}:{application/json}
   ```
-  
+  \
   The same goes for the **DELETE**.
   ```
   delete -h {Content-Type}:{application/json}
   ```
-  
+  \
   And the **GET** is just like all of the previous **GET** calls.
   ```
   get
   ```
-  
 </details>
