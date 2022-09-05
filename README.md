@@ -12,6 +12,16 @@ It is also to practice the use of an API overall, doing tests through PostMan, U
   - [x] Able to POST a new to-do item.
   - [x] Able to PUT an existing to-do item by using its ID.
   - [x] Able to DELETE an existing to-do item by using its ID.
+- [ ] To do Web client:
+  - [ ] Index page which tells about the project, allow anonymous access.
+  - [ ] A TodoItems page, which shows all of the To-do items, which isn't completed.
+    - [ ] If you click on the To-do item's *description*, it will open a new Page where you can Edit properties. Remember validation of User input.
+    - [ ] Can also choose to delete the To-do item but, there needs to be a confirm Pop-up before it gets deleted. 
+  - [ ] On the front page of the TodoItems page, you will have the option to create a new To-do item.
+    - [ ] Maybe in the form of a Modal.
+  - [ ] When you click on a To-do item's Checkbox to mark the task as *Completed*,the task will get removed from the shown list (Soft-delete)
+  - [ ] Make a TodoService, which injectes with Dependency Injection.
+  - [ ] The application's constants is placed in a AppConstants class.
 
 ### API Overview and Endpoints
 | API                     | Description                    | Request body | Response body        |
