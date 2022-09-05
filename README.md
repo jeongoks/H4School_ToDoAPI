@@ -78,6 +78,7 @@ Because we're using an InMemory DB, we'll need to do a few **POST** calls before
   ```
   cd notCompleted
   ```
+  Once inside the https://localhost:7221/todoitems/notCompleted then retrieve all *not*-completed To-do items.
   ```
   get
   ```
