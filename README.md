@@ -5,13 +5,13 @@ It is also to practice the use of an API overall, doing tests through PostMan, U
 
 
 ### Specifications
-- [ ] To do API:
-  - [ ] Able to GET all to-do items, which needs to be completed.
-  - [ ] Able to GET **all** to-do items.
-  - [ ] Able to GET a specific to-do item by using its ID.
-  - [ ] Able to POST a new to-do item.
-  - [ ] Able to PUT an existing to-do item by using its ID.
-  - [ ] Able to DELETE an existing to-do item by using its ID.
+- [x] To do API:
+  - [x] Able to GET all to-do items, which needs to be completed.
+  - [x] Able to GET **all** to-do items.
+  - [x] Able to GET a specific to-do item by using its ID.
+  - [x] Able to POST a new to-do item.
+  - [x] Able to PUT an existing to-do item by using its ID.
+  - [x] Able to DELETE an existing to-do item by using its ID.
 
 ### API Overview and Endpoints
 | API                     | Description                    | Request body | Response body        |
