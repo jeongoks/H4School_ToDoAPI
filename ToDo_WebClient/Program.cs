@@ -1,3 +1,4 @@
+using Auth0.AspNetCore.Authentication;
 using ToDo_WebClient.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -9,6 +10,21 @@ builder.Services.AddScoped<ITodoService, TodoService>();
 
 builder.Services.AddHttpClient<TodoService>();
 builder.Services.AddHttpContextAccessor();
+
+builder.Services.ConfigureApplicationCookie(options =>
+{
+    options.Cookie.SameSite = SameSiteMode.None;
+});
+
+
+builder.Services
+    .AddAuth0WebAppAuthentication(options =>
+    {
+        options.Domain = builder.Configuration["Auth0:Domain"];
+        options.ClientId = builder.Configuration["Auth0:ClientId"];
+        options.ClientSecret = builder.Configuration["Auth0:ClientSecret"];
+        options.Scope = "openid profile email";
+    });
 
 var app = builder.Build();
 
@@ -25,6 +41,7 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapRazorPages();

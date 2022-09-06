@@ -29,6 +29,25 @@
                             <a class="nav-link text-dark" asp-area="" asp-page="/Todo/ToDoItems">To do items</a>
                         </li>
                     </ul>
+                    <ul class="navbar-nav flex-grow-1 me-auto">
+                        @if (User.Identity.IsAuthenticated == true)
+                        {
+                            <li class="nav-item text-right">
+                                <a class="nav-link text-dark" asp-page="/Account/Profile">Welcome @User.Identity.Name !</a>
+                            </li>
+                        }
+
+                        <li class="nav-item text-rigt">
+                            @if (User.Identity.IsAuthenticated == true)
+                            {
+                                <a class="nav-link text-dark" asp-area="" asp-page="/Account/Logout">Logout</a>
+                            }
+                            else
+                            {
+                                <a class="nav-link text-dark text-right" asp-area="" asp-page="/Account/Login">Login</a>
+                            }
+                        </li>
+                    </ul>
                 </div>
             </div>
         </nav>
