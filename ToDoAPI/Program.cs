@@ -3,7 +3,7 @@ using ToDoAPI.Context;
 using ToDoAPI.Models;
 
 var builder = WebApplication.CreateBuilder(args);
-builder.Services.AddDbContext<TodoDb>(opt => opt.UseInMemoryDatabase("ToDoList"));
+builder.Services.AddDbContext<TodoDb>(opt => opt.UseInMemoryDatabase("ToDoList")) ;
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 builder.Services.AddEndpointsApiExplorer();

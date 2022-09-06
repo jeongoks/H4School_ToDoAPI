@@ -1,7 +1,14 @@
+using ToDo_WebClient.Services;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
+
+builder.Services.AddScoped<ITodoService, TodoService>();
+
+builder.Services.AddHttpClient<TodoService>();
+builder.Services.AddHttpContextAccessor();
 
 var app = builder.Build();
 

@@ -1,17 +1,54 @@
 ﻿@page
-@model IndexModel
+@model ToDo_WebClient.Pages.Todo.ToDoItemsModel
 @{
-    ViewData["Title"] = "Home page";
+    ViewData["Title"] = "List of To do items";
 }
 
-<div class="text-center">
-    <h1>Web API, Web Client and furthermore Auth0.</h1>
-    <p>This is a project made to practice the above mentioned. </p>
-    <p>It's made for a school project, so that I can become more familiar with the concepts of everything.</p>
-    <p>Start by creating a new To-do item: <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Create ToDo</button>
+<div class="container">
+    <div class="row">
+        <div class="col-10">
+            <h1>To do items</h1>
+        </div>
+        <div class="col-2">
+            <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Create ToDo</button>
+        </div>
+    </div>
+    <div class="row">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Completed</th>
+                    <th>Name</th>
+                    <th>Priority</th>
+                    <th>Creation Time</th>
+                    <th>Description</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model.TodoItems is not null)
+                {
+                    @foreach (var item in Model.TodoItems)
+                    {
+                        <tr>
+                            <td>
+                                <input type="checkbox" onchange="reloadPage()" id="isCompleted" asp-for="@item.Completed" />
+                            </td>
+
+                            <td>@item.Name</td>
+                            <td>@item.Priority</td>
+                            <td>@item.CreatedTime</td>
+                            <td>
+                                <a asp-page="/Todo/EditTodo" asp-route-TodoId="@item.ID">@item.Description</a>
+                            </td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
 </div>
 
-
+<!-- MODAL -->
 <form method="post">
     <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div class="modal-dialog">
@@ -26,7 +63,7 @@
                             <label>Name:</label>
                         </div>
                         <div class="col-8">
-                            <input type="text" asp-for="@Model.TodoItem.Name" placeholder="Enter name..." id="Name"/>
+                            <input type="text" asp-for="@Model.TodoItem.Name" placeholder="Enter name..." id="Name" />
                             <br />
                             <span class="text-danger" asp-validation-for="@Model.TodoItem.Name"></span>
                         </div>
@@ -46,7 +83,7 @@
                             <label>Priority:</label>
                         </div>
                         <div class="col-8">
-                            <select asp-for="@Model.TodoItem.Priority" id="Priority" 
+                            <select asp-for="@Model.TodoItem.Priority" id="Priority"
                                     class="form-control">
                                 <option value="0">High</option>
                                 <option value="1">Normal</option>
@@ -63,7 +100,7 @@
                         <div class="col-8">
                             <input type="checkbox" asp-for="@Model.TodoItem.Completed">
                         </div>
-                    </div>      
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
@@ -73,3 +110,11 @@
         </div>
     </div>
 </form>
+
+<script>
+    function reloadPage() {
+        if($('#isCompleted').is(":checked")){
+            window.location.reload();
+        }
+    }    
+</script>
