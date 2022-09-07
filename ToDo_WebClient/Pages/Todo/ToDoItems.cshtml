@@ -31,7 +31,7 @@
                     {
                         <tr>
                             <td>
-                                <input type="checkbox" onchange="reloadPage()" id="isCompleted" asp-for="@item.Completed" />
+                                <input type="checkbox" name="isCompleted" asp-for="@item.Completed" />
                             </td>
 
                             <td>@item.Name</td>
@@ -110,11 +110,3 @@
         </div>
     </div>
 </form>
-
-<script>
-    function reloadPage() {
-        if($('#isCompleted').is(":checked")){
-            window.location.reload();
-        }
-    }    
-</script>

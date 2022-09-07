@@ -1,4 +1,9 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using System.Security.Claims;
+using ToDoAPI;
 using ToDoAPI.Context;
 using ToDoAPI.Models;
 
@@ -11,6 +16,24 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddCors();
 
+string domain = $"https://{builder.Configuration["Auth0:Domain"]}/";
+
+builder.Services
+    .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        options.Authority = domain;
+        options.Audience = builder.Configuration["Auth0:Audience"];
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            NameClaimType = ClaimTypes.NameIdentifier
+        };
+    });
+
+builder.Services.AddAuthorization();
+
+builder.Services.AddSingleton<IAuthorizationHandler, HasScopeHandler>();
+
 var app = builder.Build();
 
 #region GET => "Hello, World!"
@@ -19,12 +42,12 @@ app.MapGet("/", () => "Hello, World!");
 
 #region GET => All To-do items.
 app.MapGet("/todoitems", async (TodoDb db) => 
-    await db.Todos.ToListAsync());
+    await db.Todos.ToListAsync()).RequireAuthorization();
 #endregion
 
 #region GET => Not completed To-do items.
 app.MapGet("/todoitems/notComplete", async (TodoDb db) =>
-    await db.Todos.Where(t => t.Completed == false).ToListAsync());
+    await db.Todos.Where(t => t.Completed == false).ToListAsync()).RequireAuthorization();
 #endregion
 
 #region GET => To-do item by ID.
@@ -32,7 +55,7 @@ app.MapGet("/todoitems/{ID}", async (int id, TodoDb db) =>
     await db.Todos.FindAsync(id)
     is Todo todo
         ? Results.Ok(todo)
-        : Results.NotFound());
+        : Results.NotFound()).RequireAuthorization();
 #endregion
 
 #region POST => Add new To-do item.
@@ -42,7 +65,7 @@ app.MapPost("/todoitems", async (Todo todo, TodoDb db) =>
     await db.SaveChangesAsync();
 
     return Results.Created($"/todoitems/{todo.ID}", todo);
-});
+}).RequireAuthorization();
 #endregion
 
 #region PUT => To-do item by ID.
@@ -82,5 +105,14 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseCors(o => {
+    o.AllowAnyOrigin();
+    o.AllowAnyHeader();
+    o.AllowAnyMethod();
+});
+
+app.UseAuthentication();
+app.UseAuthorization();
 
 app.Run();
