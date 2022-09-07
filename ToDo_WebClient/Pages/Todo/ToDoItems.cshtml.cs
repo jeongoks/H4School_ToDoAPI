@@ -14,8 +14,9 @@ namespace ToDo_WebClient.Pages.Todo
             _toDoService = todoService;
         }
 
+        [BindProperty(SupportsGet = true)]
         public List<TodoDTO> TodoItems { get; set; }
-        [BindProperty]
+        [BindProperty(SupportsGet = true)]
         public TodoDTO TodoItem { get; set; }
 
         public async Task<IActionResult> OnGet()

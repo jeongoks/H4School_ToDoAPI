@@ -33,6 +33,7 @@ namespace ToDo_WebClient.Services
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public Task<TodoDTO> GetItemByIdAsync(int id);        
+        public Task<TodoDTO> GetItemByIdAsync(int id);
+        public Task InitializeHttpClient();
     }
 }

@@ -6,16 +6,16 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddRazorPages();
 
-builder.Services.AddScoped<ITodoService, TodoService>();
-
 builder.Services.AddHttpClient<TodoService>();
+
+builder.Services.AddControllersWithViews();
 builder.Services.AddHttpContextAccessor();
+builder.Services.AddScoped<ITodoService, TodoService>();
 
 builder.Services.ConfigureApplicationCookie(options =>
 {
     options.Cookie.SameSite = SameSiteMode.None;
 });
-
 
 builder.Services
     .AddAuth0WebAppAuthentication(options =>
@@ -24,6 +24,10 @@ builder.Services
         options.ClientId = builder.Configuration["Auth0:ClientId"];
         options.ClientSecret = builder.Configuration["Auth0:ClientSecret"];
         options.Scope = "openid profile email";
+    })
+    .WithAccessToken(options =>
+    {
+        options.Audience = builder.Configuration["Auth0:Audience"];
     });
 
 var app = builder.Build();
