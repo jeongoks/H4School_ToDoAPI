@@ -31,8 +31,6 @@ namespace ToDo_WebClient.Services
                 await InitializeHttpClient();
                 var httpResponse = await _httpClient.PostAsJsonAsync(AppConstants.TodoAPI, todo);
                 httpResponse.EnsureSuccessStatusCode();
-                //TodoDTO createdTodo = await httpResponse.Content.ReadFromJsonAsync<TodoDTO>();
-                //return createdTodo;
             }
             catch (Exception ex)
             {

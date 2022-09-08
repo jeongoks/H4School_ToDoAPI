@@ -14,9 +14,9 @@ namespace ToDo_WebClient.Pages.Todo
             _toDoService = todoService;
         }
 
-        [BindProperty(SupportsGet = true)]
+        [BindProperty]
         public List<TodoDTO> TodoItems { get; set; }
-        [BindProperty(SupportsGet = true)]
+        [BindProperty]
         public TodoDTO TodoItem { get; set; }
 
         public async Task<IActionResult> OnGet()
@@ -25,7 +25,7 @@ namespace ToDo_WebClient.Pages.Todo
             return Page();
         }
 
-        public async Task<IActionResult> OnPost()
+        public async Task<IActionResult> OnPostCreateTodo()
         {
             if (ModelState.IsValid)
             {
@@ -36,6 +36,14 @@ namespace ToDo_WebClient.Pages.Todo
             {
                 return RedirectToPage("/Error");
             }
+            return RedirectToPage("/Todo/ToDoItems");
+        }
+
+        public async Task<IActionResult> OnPostCompleteTodo(int iD)
+        {
+            TodoItem = await _toDoService.GetItemByIdAsync(iD);
+            TodoItem.Completed = true;
+            await _toDoService.Update(TodoItem.ID, TodoItem);
             return RedirectToPage("/Todo/ToDoItems");
         }
     }

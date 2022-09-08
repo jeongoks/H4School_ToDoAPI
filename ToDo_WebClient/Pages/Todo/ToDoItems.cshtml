@@ -29,11 +29,13 @@
                 {
                     @foreach (var item in Model.TodoItems)
                     {
+                        <input />
                         <tr>
                             <td>
-                                <input type="checkbox" name="isCompleted" asp-for="@item.Completed" />
+                                <form method="post" asp-page-handler="CompleteTodo" asp-route-id="@item.ID">
+                                    <button type="submit" class="btn btn-success" name="isCompleted" asp-for="@item.Completed">Mark as complete</button>
+                                </form>
                             </td>
-
                             <td>@item.Name</td>
                             <td>@item.Priority</td>
                             <td>@item.CreatedTime</td>
@@ -49,7 +51,7 @@
 </div>
 
 <!-- MODAL -->
-<form method="post">
+<form method="post" asp-page-handler="CreateTodo">
     <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
