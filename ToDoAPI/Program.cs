@@ -30,7 +30,11 @@ builder.Services
         };
     });
 
-builder.Services.AddAuthorization();
+builder.Services.AddAuthorization(o =>
+{
+    o.AddPolicy("ReadPolicy", p => p.RequireAuthenticatedUser().RequireClaim("permissions", "todo:read"));
+    o.AddPolicy("WritePolicy", p => p.RequireAuthenticatedUser().RequireClaim("permissions", "todo:write"));
+});
 
 builder.Services.AddSingleton<IAuthorizationHandler, HasScopeHandler>();
 
@@ -42,12 +46,12 @@ app.MapGet("/", () => "Hello, World!");
 
 #region GET => All To-do items.
 app.MapGet("/todoitems", async (TodoDb db) => 
-    await db.Todos.ToListAsync()).RequireAuthorization();
+    await db.Todos.ToListAsync()).RequireAuthorization("ReadPolicy");
 #endregion
 
 #region GET => Not completed To-do items.
 app.MapGet("/todoitems/notComplete", async (TodoDb db) =>
-    await db.Todos.Where(t => t.Completed == false).ToListAsync()).RequireAuthorization();
+    await db.Todos.Where(t => t.Completed == false).ToListAsync()).RequireAuthorization("ReadPolicy");
 #endregion
 
 #region GET => To-do item by ID.
@@ -55,7 +59,7 @@ app.MapGet("/todoitems/{ID}", async (int id, TodoDb db) =>
     await db.Todos.FindAsync(id)
     is Todo todo
         ? Results.Ok(todo)
-        : Results.NotFound()).RequireAuthorization();
+        : Results.NotFound()).RequireAuthorization("ReadPolicy");
 #endregion
 
 #region POST => Add new To-do item.
@@ -65,7 +69,7 @@ app.MapPost("/todoitems", async (Todo todo, TodoDb db) =>
     await db.SaveChangesAsync();
 
     return Results.Created($"/todoitems/{todo.ID}", todo);
-}).RequireAuthorization();
+}).RequireAuthorization("WritePolicy");
 #endregion
 
 #region PUT => To-do item by ID.
@@ -83,7 +87,7 @@ app.MapPut("/todoitems/{ID}", async (int id, Todo inputTodo, TodoDb db) =>
     await db.SaveChangesAsync();
 
     return Results.NoContent();
-});
+}).RequireAuthorization("WritePolicy");
 #endregion
 
 #region DELETE => To-do item by ID.
@@ -97,7 +101,7 @@ app.MapDelete("/todoitems/{ID}", async (int id, TodoDb db) =>
     }
 
     return Results.NotFound();
-});
+}).RequireAuthorization("WritePolicy");
 #endregion
 
 if (app.Environment.IsDevelopment())

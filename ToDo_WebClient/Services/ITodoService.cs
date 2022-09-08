@@ -14,7 +14,7 @@ namespace ToDo_WebClient.Services
         /// </summary>
         /// <param name="todo"></param>
         /// <returns></returns>
-        public Task<TodoDTO> CreateAsync(TodoDTO todo);
+        public Task CreateAsync(TodoDTO todo);
         /// <summary>
         /// Updating an exisiting <see cref="Todo"/> by the use of <see cref="Todo.ID"/>.
         /// </summary>

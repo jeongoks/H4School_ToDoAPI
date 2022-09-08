@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Net.Http.Headers;
 using ToDo_WebClient.Models;
 
@@ -23,13 +24,21 @@ namespace ToDo_WebClient.Services
             _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
         }
 
-        public async Task<TodoDTO> CreateAsync(TodoDTO todo)
+        public async Task CreateAsync(TodoDTO todo)
         {
-            await InitializeHttpClient();
-            var httpResponse = await _httpClient.PostAsJsonAsync(AppConstants.TodoAPI, todo);
-            httpResponse.EnsureSuccessStatusCode();
-            TodoDTO createdTodo = await httpResponse.Content.ReadFromJsonAsync<TodoDTO>();
-            return createdTodo;
+            try
+            {
+                await InitializeHttpClient();
+                var httpResponse = await _httpClient.PostAsJsonAsync(AppConstants.TodoAPI, todo);
+                httpResponse.EnsureSuccessStatusCode();
+                //TodoDTO createdTodo = await httpResponse.Content.ReadFromJsonAsync<TodoDTO>();
+                //return createdTodo;
+            }
+            catch (Exception ex)
+            {
+                
+            }
+            
         }
 
         public async Task Update(int id, TodoDTO todo)
@@ -58,6 +67,6 @@ namespace ToDo_WebClient.Services
             await InitializeHttpClient();
             List<TodoDTO> toDoItems = await _httpClient.GetFromJsonAsync<List<TodoDTO>>($"{AppConstants.TodoAPI}/notComplete");
             return toDoItems;
-        }        
+        }
     }
 }

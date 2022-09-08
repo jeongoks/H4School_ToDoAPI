@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using System.Security.Claims;
 using ToDo_WebClient.Models;
 using ToDo_WebClient.Services;
 
@@ -12,6 +13,8 @@ namespace ToDo_WebClient.Pages
 
         [BindProperty(SupportsGet = true)]
         public TodoDTO TodoItem { get; set; }
+        [BindProperty(SupportsGet = true)]
+        public string? UserClaims { get; set; }
 
         public IndexModel(ILogger<IndexModel> logger, ITodoService todoService)
         {
@@ -21,14 +24,14 @@ namespace ToDo_WebClient.Pages
 
         public void OnGet()
         {
-
+            
         }
 
         public async Task<IActionResult> OnPost()
         {
             if (ModelState.IsValid)
             {
-                TodoItem = await _todoService.CreateAsync(TodoItem);
+                await _todoService.CreateAsync(TodoItem);
                 return RedirectToPage("/Index");
             }
             else

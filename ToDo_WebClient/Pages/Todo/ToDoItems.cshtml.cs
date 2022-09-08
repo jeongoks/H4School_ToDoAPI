@@ -29,8 +29,12 @@ namespace ToDo_WebClient.Pages.Todo
         {
             if (ModelState.IsValid)
             {
-                TodoItem = await _toDoService.CreateAsync(TodoItem);
+                await _toDoService.CreateAsync(TodoItem);
                 return RedirectToPage("/Todo/ToDoItems");
+            }
+            else
+            {
+                return RedirectToPage("/Error");
             }
             return RedirectToPage("/Todo/ToDoItems");
         }
